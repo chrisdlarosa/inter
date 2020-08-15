@@ -1,0 +1,23 @@
+body {
+	background: -webkit-linear-gradient(bottom,#F3F0F0,white 45%);
+	background-attachment: fixed;
+}
+
+.navbar{
+	box-shadow: 2px 0px 13px;
+	background-color: #59D384;
+}
+
+#moon {
+	color: #586353;
+	position: relative;
+}
+
+.menus {
+	/*color: #5D5D5D;*/
+	position: relative;
+}
+
+.logo {
+	font-family: 'Righteous', cursive;
+}
