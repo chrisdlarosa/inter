@@ -43,7 +43,7 @@ class Database
 			echo $e->getMessage();
 		}
 	}
-	function verificaLogin($correo,$contraseña)
+	function verificaLogin($correo,$pass)
 	{
 		try {
 			$pase = 0;
@@ -52,16 +52,19 @@ class Database
 			$consulta = $this->PDOLocal->query($query);
 			while ($registro = $consulta->fetch(PDO::FETCH_ASSOC))
 			{
-				if (password_verify($contraseña,$registro['contraseña']))
+				if (password_verify($pass,$registro['pass']))
 				{
 					$pase=1;
 					$tipo = $registro['tipo_usuario'];
+					$id = $registro['id'];
 				}
 			}
-			if ($pase==0) 
+			if ($pase==1) 
 			{
 				session_start();
 				$_SESSION["usuario"]=$correo;
+				$_SESSION["tipo"]=$tipo;
+				$_SESSION["vendedor"]=$id;
 				echo "<div class='alert alert-success'>";
 				echo "<h2 aling='center'>Bienvenido ".$_SESSION["usuario"]."</h2>";
 				echo "</div>";

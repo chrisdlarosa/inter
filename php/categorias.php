@@ -1,3 +1,10 @@
+<?php 
+session_start();
+if (empty($_SESSION["usuario"])) {
+	header("refresh:0; ../index.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,8 +32,8 @@
 		  </button>
 		  <div class="collapse navbar-collapse" id="navbarNavDropdown">
 		    <ul class="navbar-nav ml-auto">
-		      <li class="nav-item">
-		        <a class="nav-link" href="#"><i class="fas fa-home menus"></i> Inicio<span class="sr-only">(current)</span></a>
+		      <li class="nav-item active">
+		        <a class="nav-link" href="../maina.view.php"><i class="fas fa-home menus"></i> Inicio<span class="sr-only">(current)</span></a>
 		      </li>
 		      <li class="nav-item dropdown">
 		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -53,8 +60,10 @@
 		          <i class="fas fa-box-open"></i> Productos
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-		          <a class="dropdown-item" href="#">Ver Productos</a>
-		          <a class="dropdown-item" href="#">Agregar Poductos</a>
+		          <a class="dropdown-item" href="productos.php">Ver Productos</a>
+		          <a class="dropdown-item" href="nuevoProducto.php">Agregar Poductos</a>
+		          <a class="dropdown-item" href="categorias.php">Categorias</a>
+		          <a class="dropdown-item" href="productosxcategoria.php">Productos por Categoria</a>
 		          <a class="dropdown-item" href="#">Consultas</a>
 		        </div>
 		      </li>
@@ -63,17 +72,17 @@
 		          <i class="fas fa-user-tie"></i> Usuarios
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-		          <a class="dropdown-item" href="#">Ver Usuarios</a>
+		          <a class="dropdown-item" href="verUsuarios.php">Ver Usuarios</a>
 		          <a class="dropdown-item" href="nuevoVendedeor.php">Agregar Usuarior</a>
 		          <a class="dropdown-item" href="#">Consultas</a>
 		        </div>
 		      </li>
 		      <li class="nav-item dropdown">
 		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		        	<i class="fas fa-envelope-open"></i>
 		          <?php 
-		          session_start();
-		          if (isset($_SESSION["usuario"])) { echo $_SESSION["usuario"];}
-		           ?>
+		          echo $_SESSION["usuario"];
+		          ?>
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 		          <a class="dropdown-item" href="../scripts/close.php">Cerrar Sesion</a></a>
@@ -83,6 +92,7 @@
 		  </div>
 		  </div>
 	</nav>
+
 <!-- ***************Inicio del sitio******************* -->
 <?php 
 		include '../scripts/database.php';
@@ -106,7 +116,7 @@
 			<tbody>
 				<?php foreach($tabla as $fila): ?>
 					<tr>
-						<th> <?php echo $fila->codigo; ?> </td>
+						<th> <?php echo $fila->codigo; ?> </th>
 						<td> <?php echo $fila->Nombre; ?> </td>
 					</tr>
 				<?php endforeach; ?>
@@ -126,10 +136,10 @@
 	      <div class="modal-body">
 	        <form action="../scripts/newCat.php" method="post" id="datos">
 	          <div class="form-group">
-	            <input type="text" class="form-control" id="recipient-name" placeholder="Codigo" name="codigo" required>
+	            <input type="text" class="form-control" id="recipient-name" placeholder="Codigo" name="codigo" maxlength="6" required>
 	          </div>
 	          <div class="form-group">
-	            <input type="text" class="form-control" id="recipient-name" placeholder="Descripcion" name="descripcion" required>
+	            <input type="text" class="form-control" id="recipient-name" placeholder="Descripcion" name="descripcion" maxlength="55" required>
 	          </div>
 	        </form>
 	      </div>

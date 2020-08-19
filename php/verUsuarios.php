@@ -9,7 +9,7 @@ if (empty($_SESSION["usuario"])) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Agergar Producto</title>
+    <title>Ver Usuarios</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" type="image/svg+xml" href="favicon/moon-solid.svg" sizes="any">
     <meta http-equiv="x-ua-compatible" content="ie-edge">
@@ -17,6 +17,7 @@ if (empty($_SESSION["usuario"])) {
     <link rel="stylesheet" href="../css/maina.css">
     <link rel="stylesheet" href="../css/all.min.css">
     <link rel="stylesheet" href="../css/forms.css">
+    <link rel="stylesheet" href="../css/categorias.css">
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
 	<style>
 		form {margin-bottom: 50px}
@@ -93,54 +94,43 @@ if (empty($_SESSION["usuario"])) {
 	</nav>
 
 <!-- ***************Inicio del sitio******************* -->
-	<?php 
-	include '../scripts/database.php';
-	$db=new Database();
-	$db->conectarBD();
-	$cadena = "select*from categorias";
-	$registros = $db->seleccionar($cadena);
-	 ?>
-	<div class="container">
-		<form action="../scripts/addPro.php" method="post" class="form col-md-6 col-11">
-			<h2>Agregar producto nuevo</h2>
-			<div class="form-group">
-				<input type="text" class="form-control" id="" name="folio" aria-describedby="emailHelp" placeholder="Folio" maxlength="20" required>
-			</div>
-			<div class="form-group">
-				<input type="text" class="form-control" id="" name="descripcion" aria-describedby="emailHelp" placeholder="Descripcion" maxlength="66" required>
-			</div>
-			<div class="input-group mb-3">
-			    <div class="input-group-prepend">
-			      <span class="input-group-text"> $ </span>
-			    </div>
-			    <input type="number" class="form-control" id="" name="costo" aria-describedby="emailHelp" placeholder="Costo de Compra" step="any" required>
-		  	</div>
-			<div class="input-group mb-3">
-			    <div class="input-group-prepend">
-			      <span class="input-group-text"> $ </span>
-			    </div>
-			    <input type="number" class="form-control" id="" name="precio" aria-describedby="emailHelp" placeholder="Precio Venta" step="any" required>
-		  	</div>
-			<div class="input-group mb-3">
-			    <div class="input-group-prepend">
-			      <span class="input-group-text"> % </span>
-			    </div>
-			    <input type="number" class="form-control" id="" name="iva" aria-describedby="emailHelp" placeholder="IVA a incluir" required>
-		  	</div>
-			<div class="input-group mb-3">
-			    <div class="input-group-prepend">
-			      <span class="input-group-text">Categoria </span>
-			    </div>
-		    	<select class="form-control" id="sel1" name="categoria">
-				     <?php foreach ($registros as $value): ?>
-				     	<option value="<?php echo $value->cve; ?>"> <?php echo $value->Nombre; ?> </option>
-				     <?php endforeach; ?>
-				</select>
-		  	</div>
-		  	<button type="submit" class="btn btn-lg btn-success">Registrar Producto</button>
-		</form>
+<?php 
+		include '../scripts/database.php';
+		$conexion = new Database();
+		$conexion->conectarBD();
+		$consulta="SELECT*FROM usuarios";
+		$tabla = $conexion->seleccionar($consulta);
+		 ?>
+	<div class="container" id="cat">
+		<h2>Usuarios</h2>
+		<table class="table table-hover col-table-responsive">
+			<thead class="bg-primary">
+				<th scope="col">ID</th>
+				<th scope="col">Nombre Completo</th>
+				<th scope="col">Correo</th>
+				<th scope="col">Telefono</th>
+				<th scope="col">Nacimiento</th>
+				<th scope="col">Domicilio</th>
+				<th scope="col">Tipo</th>
+			</thead>
+			<tbody>
+				<?php foreach($tabla as $fila): ?>
+					<tr>
+						<th> <?php echo $fila->id; ?> </th>
+						<td> <?php echo $fila->nombre ." ". $fila->apellidos; ?> </td>
+						<th> <?php echo $fila->correo; ?> </th>
+						<td> <?php echo $fila->telefono; ?> </td>
+						<td> <?php echo $fila->fecha_nac; ?> </td>
+						<td> <?php echo $fila->domicilio; ?> </td>
+						<th> <?php echo $fila->tipo_usuario; ?> </th>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
 	</div>
-     <?php $db->desconectarBD(); ?>
+	<?php $conexion->desconectarBD(); ?>
+	
+
 <!-- ***************Termino contenido del sitio******************** -->
    <!-- Enlazes a Jquery -->
     <script src="../js/popper.min.js"></script>

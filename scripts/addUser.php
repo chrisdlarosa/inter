@@ -81,8 +81,9 @@
 		$apellidos = strtoupper($apellidos);
 		$correo = strtoupper($correo);
 		$domicilio = strtoupper($domicilio);
-		$hash = password_hash($contraseña, PASSWORD_DEFAULT);
-		$cadena="INSERT INTO usuarios (nombre,apellidos,correo,telefono,fecha_nac,domicilio,fecha_reg,tipo_usuario,contraseña) VALUES ('$nombre','$apellidos','$correo','$telefono','$fnacimiento','$domicilio',now(),$tipo,'$hash')";
+		$tel = $telefono;
+		$hash = password_hash($pass, PASSWORD_DEFAULT);
+		$cadena="INSERT INTO usuarios (nombre,apellidos,correo,telefono,fecha_nac,domicilio,fecha_reg,tipo_usuario,pass) VALUES ('$nombre','$apellidos','$correo','$tel','$fnacimiento','$domicilio',now(),$tipo,'$hash')";
 		$db->ejecutaSQL($cadena);
 		?>
 		<div class="alert alert-success">Usuario agregado exitosamente!</div>

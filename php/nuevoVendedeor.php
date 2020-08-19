@@ -1,3 +1,10 @@
+<?php 
+session_start();
+if (empty($_SESSION["usuario"])) {
+	header("refresh:0; ../index.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -24,8 +31,8 @@
 		  </button>
 		  <div class="collapse navbar-collapse" id="navbarNavDropdown">
 		    <ul class="navbar-nav ml-auto">
-		      <li class="nav-item">
-		        <a class="nav-link" href="#"><i class="fas fa-home menus"></i> Inicio<span class="sr-only">(current)</span></a>
+		      <li class="nav-item active">
+		        <a class="nav-link" href="../maina.view.php"><i class="fas fa-home menus"></i> Inicio<span class="sr-only">(current)</span></a>
 		      </li>
 		      <li class="nav-item dropdown">
 		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -52,8 +59,10 @@
 		          <i class="fas fa-box-open"></i> Productos
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-		          <a class="dropdown-item" href="#">Ver Productos</a>
-		          <a class="dropdown-item" href="#">Agregar Poductos</a>
+		          <a class="dropdown-item" href="productos.php">Ver Productos</a>
+		          <a class="dropdown-item" href="nuevoProducto.php">Agregar Poductos</a>
+		          <a class="dropdown-item" href="categorias.php">Categorias</a>
+		          <a class="dropdown-item" href="productosxcategoria.php">Productos por Categoria</a>
 		          <a class="dropdown-item" href="#">Consultas</a>
 		        </div>
 		      </li>
@@ -62,17 +71,17 @@
 		          <i class="fas fa-user-tie"></i> Usuarios
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-		          <a class="dropdown-item" href="#">Ver Usuarios</a>
+		          <a class="dropdown-item" href="verUsuarios.php">Ver Usuarios</a>
 		          <a class="dropdown-item" href="nuevoVendedeor.php">Agregar Usuarior</a>
 		          <a class="dropdown-item" href="#">Consultas</a>
 		        </div>
 		      </li>
 		      <li class="nav-item dropdown">
 		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		        	<i class="fas fa-envelope-open"></i>
 		          <?php 
-		          session_start();
-		          if (isset($_SESSION["usuario"])) { echo $_SESSION["usuario"];}
-		           ?>
+		          echo $_SESSION["usuario"];
+		          ?>
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 		          <a class="dropdown-item" href="../scripts/close.php">Cerrar Sesion</a></a>
@@ -82,6 +91,7 @@
 		  </div>
 		  </div>
 	</nav>
+	
 <!-- ***************Inicio del sitio******************* -->
 	<?php 
 	include '../scripts/database.php';
@@ -94,16 +104,16 @@
 		<form action="../scripts/addUser.php" method="post" class="form col-md-6 col-11">
 			<h2>Agregar usuario nuevo</h2>
 			<div class="form-group">
-				<input type="text" class="form-control" id="" name="nombre" aria-describedby="emailHelp" placeholder="Nombre del usuario" required>
+				<input type="text" class="form-control" id="" name="nombre" aria-describedby="emailHelp" placeholder="Nombre del usuario" maxlength="33" required>
 			</div>
 			<div class="form-group">
-				<input type="text" class="form-control" id="" name="apellidos" aria-describedby="emailHelp" placeholder="Apellidos del usuario" required>
+				<input type="text" class="form-control" id="" name="apellidos" aria-describedby="emailHelp" placeholder="Apellidos del usuario" maxlength="55" required>
 			</div>
 			<div class="form-group">
-				<input type="email" class="form-control" id="" name="correo" aria-describedby="emailHelp" placeholder="Correo Electronico del usuario" required>
+				<input type="email" class="form-control" id="" name="correo" aria-describedby="emailHelp" placeholder="Correo Electronico del usuario" maxlength="55" required>
 			</div>
 			<div class="form-group">
-				<input type="tel" class="form-control" id="" name="telefono" aria-describedby="emailHelp" placeholder="Telefono celular del usuario" required>
+				<input type="tel" class="form-control" id="" name="telefono" aria-describedby="emailHelp" placeholder="Telefono celular del usuario" maxlength="10" required>
 			</div>
 			<div class="input-group mb-3">
 			    <div class="input-group-prepend">
@@ -112,7 +122,7 @@
 		    	<input type="date" class="form-control" placeholder="" name="fnacimiento">
 		  	</div>
 			<div class="form-group">
-				<input type="text" class="form-control" id="" name="domicilio" aria-describedby="emailHelp" placeholder="Domiciolio del usuario" required>
+				<input type="text" class="form-control" id="" name="domicilio" aria-describedby="emailHelp" placeholder="Domiciolio del usuario" maxlength="66" required>
 			</div>
 			<div class="input-group mb-3">
 			    <div class="input-group-prepend">
@@ -128,7 +138,7 @@
 			    <div class="input-group-prepend">
 			      <span class="input-group-text"><i class="fas fa-key"></i></span>
 			    </div>
-		    	<input type="text" class="form-control" placeholder="Contraseña" name="contraseña">
+		    	<input type="text" class="form-control" placeholder="Contraseña" name="pass" maxlength="22">
 		  	</div>
 		  	<button type="submit" class="btn btn-lg btn-success">Añadir usuario</button>
 		</form>

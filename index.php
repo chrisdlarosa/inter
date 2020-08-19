@@ -21,7 +21,7 @@
 		    	<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Correo Electronico" name="correo">
 		  	</div>
 		  	<div class="form-group">
-		    	<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña" name="contraseña">
+		    	<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña" name="pass">
 		  	</div>
 		  	<a href="#" class="badge badge-light">Olvide mi contraseña</a>
 		  	<button type="submit" class="btn btn-primary">Iniciar Sesion</button>
