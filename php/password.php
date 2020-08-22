@@ -3,13 +3,31 @@ session_start();
 if (empty($_SESSION["usuario"])) {
 	header("refresh:0; ../index.php");
 }
+if (empty($_GET['id'])){
+	header("refresh:0; verUsuarios.php");
+}
+$usuario = $_GET['id'];
+include '../scripts/database.php';
+$user=new Database();
+$user->conectarBD();
+$cadena = "SELECT*FROM usuarios WHERE id = '$usuario'";
+$users = $user->seleccionar2($cadena);
+$user->desconectarBD();
+if ($users==0){
+	header("refresh:0; verUsuarios.php");	
+}
+$id = $users['id'];
+$nombre = $users['nombre'];
+$apellidos = $users['apellidos'];
+$correo = $users['correo'];
+$telefono = $users['telefono'];
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ver Usuarios</title>
+    <title>Modificar Usuario</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" type="image/svg+xml" href="../favicon/moon-solid.svg" sizes="any">
     <meta http-equiv="x-ua-compatible" content="ie-edge">
@@ -17,7 +35,6 @@ if (empty($_SESSION["usuario"])) {
     <link rel="stylesheet" href="../css/maina.css">
     <link rel="stylesheet" href="../css/all.min.css">
     <link rel="stylesheet" href="../css/forms.css">
-    <link rel="stylesheet" href="../css/categorias.css">
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
 	<style>
 		form {margin-bottom: 50px}
@@ -92,50 +109,48 @@ if (empty($_SESSION["usuario"])) {
 		  </div>
 		  </div>
 	</nav>
-
-<!-- ***************Inicio del sitio******************* -->
-<?php 
-		include '../scripts/database.php';
-		$conexion = new Database();
-		$conexion->conectarBD();
-		$consulta="SELECT*FROM usuarios";
-		$tabla = $conexion->seleccionar($consulta);
-		 ?>
-	<div class="container" id="cat">
-		<h2>Usuarios</h2>
-		<table class="table table-hover table-responsive-sm">
-			<thead class="bg-primary">
-				<th scope="col">ID</th>
-				<th scope="col">Nombre Completo</th>
-				<th scope="col">Correo</th>
-				<th scope="col">Telefono</th>
-				<th scope="col">Nacimiento</th>
-				<th scope="col">Domicilio</th>
-				<th scope="col">Tipo</th>
-				<th scope="col">Acciones</th>
-			</thead>
-			<tbody>
-				<?php foreach($tabla as $fila): ?>
-					<tr>
-						<th> <?php echo $fila->id; ?> </th>
-						<td> <?php echo $fila->nombre ." ". $fila->apellidos; ?> </td>
-						<th> <?php echo $fila->correo; ?> </th>
-						<td> <?php echo $fila->telefono; ?> </td>
-						<td> <?php echo $fila->fecha_nac; ?> </td>
-						<td> <?php echo $fila->domicilio; ?> </td>
-						<th> <?php echo $fila->tipo_usuario; ?> </th>
-						<td style="display: inline-flex;">
-							<a href="actualizarvendedor.php?id=<?php echo $fila->id; ?>" class="btn btn-info" role="button" aria-pressed="true" style="margin-right: 3px;" ><i class="fas fa-pen"></i></a>
-							<a href="password.php?id=<?php echo $fila->id; ?>" class="btn btn-warning" role="button" aria-pressed="true"><i class="fas fa-lock"></i></a>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-	</div>
-	<?php $conexion->desconectarBD(); ?>
 	
-
+<!-- ***************Inicio del sitio******************* -->
+	<?php 
+	$db=new Database();
+	$db->conectarBD();
+	$cadena = "select*from tipo_usuario";
+	$registros = $db->seleccionar($cadena);
+	 ?>
+	<div class="container">
+		<form action="../scripts/updpassword.php" method="post" class="form col-md-6 col-11">
+			<h2>Cambiar contraseña de Usuario #<?php echo $id; ?> </h2>
+			<input type="hidden" class="form-control" id="" name="id" aria-describedby="emailHelp" placeholder="" maxlength="33" value="<?php echo $id; ?>" required>
+			<div class="input-group mb-3">
+			    <div class="input-group-prepend">
+			      <span class="input-group-text">Nombre </span>
+			    </div>
+			    <input type="text" class="form-control" id="" name="nombre" aria-describedby="emailHelp" placeholder="Nombre del usuario" maxlength="33" value="<?php echo $nombre; ?>" disabled >
+		  	</div>
+		  	<div class="input-group mb-3">
+			    <div class="input-group-prepend">
+			      <span class="input-group-text">Correo </span>
+			    </div>
+			    <input type="email" class="form-control" id="" name="correo" aria-describedby="emailHelp" placeholder="Correo Electronico del usuario" maxlength="55" value="<?php echo $correo; ?>" required disabled>
+		  	</div>
+		  	<div class="input-group mb-3">
+			    <div class="input-group-prepend">
+			      <span class="input-group-text">Telefono </span>
+			    </div>
+			    <input type="tel" class="form-control" id="" name="telefono" aria-describedby="emailHelp" placeholder="Telefono celular del usuario" maxlength="10" value="<?php echo $telefono; ?>" required disabled>
+		  	</div>
+			<div class="input-group mb-3">
+			    <div class="input-group-prepend">
+			      <span class="input-group-text"><i class="fas fa-key"></i></span>
+			    </div>
+		    	<input type="text" class="form-control" placeholder="Contraseña nueva" name="pass" maxlength="22">
+		  	</div>
+		  	<a href="verUsuarios.php" class="btn btn-lg btn-danger" role="button" aria-pressed="true" style="width: 44%; margin-top: 10px;">Cancelar</a>
+		  	<button type="submit" class="btn btn-lg btn-warning" style="width: 54%; margin-top: 10px;">Actualizar</button>
+		</form>
+	</div>
+     <?php $db->desconectarBD(); ?>
+<!-- ***************Footer                     ******************** -->
 <!-- ***************Termino contenido del sitio******************** -->
    <!-- Enlazes a Jquery -->
     <script src="../js/popper.min.js"></script>

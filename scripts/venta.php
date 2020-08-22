@@ -1,26 +1,16 @@
-<?php 
-session_start();
-if (empty($_SESSION["usuario"])) {
-	header("refresh:0; ../index.php");
-}
-?>
-
-<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ver Usuarios</title>
+    <title>Realizando venta</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/svg+xml" href="../favicon/moon-solid.svg" sizes="any">
     <meta http-equiv="x-ua-compatible" content="ie-edge">
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/maina.css">
     <link rel="stylesheet" href="../css/all.min.css">
     <link rel="stylesheet" href="../css/forms.css">
-    <link rel="stylesheet" href="../css/categorias.css">
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
 	<style>
-		form {margin-bottom: 50px}
+		.container {margin-top: 70px}
 	</style>
 </head>
 <body>
@@ -32,8 +22,8 @@ if (empty($_SESSION["usuario"])) {
 		  </button>
 		  <div class="collapse navbar-collapse" id="navbarNavDropdown">
 		    <ul class="navbar-nav ml-auto">
-		      <li class="nav-item active">
-		        <a class="nav-link" href="../maina.view.php"><i class="fas fa-home menus"></i> Inicio<span class="sr-only">(current)</span></a>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#"><i class="fas fa-home menus"></i> Inicio<span class="sr-only">(current)</span></a>
 		      </li>
 		      <li class="nav-item dropdown">
 		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -41,7 +31,7 @@ if (empty($_SESSION["usuario"])) {
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 		          <a class="dropdown-item" href="#">Registros</a>
-		          <a class="dropdown-item" href="ventaa.php">Nueva Venta</a>
+		          <a class="dropdown-item" href="#">Nueva Venta</a>
 		          <a class="dropdown-item" href="#">Consultas</a>
 		        </div>
 		      </li>
@@ -60,82 +50,67 @@ if (empty($_SESSION["usuario"])) {
 		          <i class="fas fa-box-open"></i> Productos
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-		          <a class="dropdown-item" href="productos.php">Ver Productos</a>
-		          <a class="dropdown-item" href="nuevoProducto.php">Agregar Poductos</a>
-		          <a class="dropdown-item" href="categorias.php">Categorias</a>
-		          <a class="dropdown-item" href="productosxcategoria.php">Productos por Categoria</a>
+		          <a class="dropdown-item" href="#">Ver Productos</a>
+		          <a class="dropdown-item" href="#">Agregar Poductos</a>
 		          <a class="dropdown-item" href="#">Consultas</a>
 		        </div>
 		      </li>
 		      <li class="nav-item dropdown">
 		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		          <i class="fas fa-user-tie"></i> Usuarios
+		          <i class="fas fa-user-tie"></i> Vendedores
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-		          <a class="dropdown-item" href="verUsuarios.php">Ver Usuarios</a>
-		          <a class="dropdown-item" href="nuevoVendedeor.php">Agregar Usuarior</a>
+		          <a class="dropdown-item" href="#">Ver Vendedores</a>
+		          <a class="dropdown-item" href="#">Agregar Vendedor</a>
 		          <a class="dropdown-item" href="#">Consultas</a>
-		        </div>
-		      </li>
-		      <li class="nav-item dropdown">
-		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		        	<i class="fas fa-envelope-open"></i>
-		          <?php 
-		          echo $_SESSION["usuario"];
-		          ?>
-		        </a>
-		        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-		          <a class="dropdown-item" href="../scripts/close.php">Cerrar Sesion</a></a>
 		        </div>
 		      </li>
 		    </ul>
 		  </div>
 		  </div>
 	</nav>
-
 <!-- ***************Inicio del sitio******************* -->
-<?php 
-		include '../scripts/database.php';
-		$conexion = new Database();
-		$conexion->conectarBD();
-		$consulta="SELECT*FROM usuarios";
-		$tabla = $conexion->seleccionar($consulta);
-		 ?>
-	<div class="container" id="cat">
-		<h2>Usuarios</h2>
-		<table class="table table-hover table-responsive-sm">
-			<thead class="bg-primary">
-				<th scope="col">ID</th>
-				<th scope="col">Nombre Completo</th>
-				<th scope="col">Correo</th>
-				<th scope="col">Telefono</th>
-				<th scope="col">Nacimiento</th>
-				<th scope="col">Domicilio</th>
-				<th scope="col">Tipo</th>
-				<th scope="col">Acciones</th>
-			</thead>
-			<tbody>
-				<?php foreach($tabla as $fila): ?>
-					<tr>
-						<th> <?php echo $fila->id; ?> </th>
-						<td> <?php echo $fila->nombre ." ". $fila->apellidos; ?> </td>
-						<th> <?php echo $fila->correo; ?> </th>
-						<td> <?php echo $fila->telefono; ?> </td>
-						<td> <?php echo $fila->fecha_nac; ?> </td>
-						<td> <?php echo $fila->domicilio; ?> </td>
-						<th> <?php echo $fila->tipo_usuario; ?> </th>
-						<td style="display: inline-flex;">
-							<a href="actualizarvendedor.php?id=<?php echo $fila->id; ?>" class="btn btn-info" role="button" aria-pressed="true" style="margin-right: 3px;" ><i class="fas fa-pen"></i></a>
-							<a href="password.php?id=<?php echo $fila->id; ?>" class="btn btn-warning" role="button" aria-pressed="true"><i class="fas fa-lock"></i></a>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-	</div>
-	<?php $conexion->desconectarBD(); ?>
-	
+	<div class="container">
+		<?php 
+		extract($_POST);
+		session_start();
+		$ide = $_SESSION['vendedor'];
+		include 'database.php';
+		$db=new Database();
+		$db->conectarBD();
+		$cadena = "INSERT INTO ventas (vendedor,cliente,f_reg,forma_pago) VALUES ($ide,$cliente,now(),'$pago')";
+		$db->ejecutaSQL($cadena);
+		$db->desconectarBD();
 
+		$db2=new Database();
+		$db2->conectarBD();
+		$cadena = "SELECT*FROM ventas order by folio DESC LIMIT 1";
+		$lastventa = $db2->seleccionar2($cadena);
+		$last = $lastventa['folio'];
+		$db2->desconectarBD();
+
+		$db3=new Database();
+		$db3->conectarBD();
+		$cadena = "SELECT*FROM productos WHERE reg = '$producto'";
+		$productos = $db3->seleccionar2($cadena);
+		$precio = $productos['precio_venta'];
+		$iva = $productos['iva'];
+		$iva = $precio*($iva/100);
+		$total = $precio+$iva;
+		$db3->desconectarBD();
+
+		$db4=new Database();
+		$db4->conectarBD();
+		$cadena = "INSERT INTO venta_productos (venta,producto,precio_u,cantidad) VALUES ($last,$producto,$total,$cantidad)";
+		$db4->ejecutaSQL($cadena);
+		$db4->desconectarBD();
+		 ?>
+
+		 <div class="alert alert-success">Venta registrada con el folio #<?php echo $last; ?> </div>
+		<?php 
+		header("refresh:3; ../php/ventaa.php");
+		 ?>
+	</div>
 <!-- ***************Termino contenido del sitio******************** -->
    <!-- Enlazes a Jquery -->
     <script src="../js/popper.min.js"></script>

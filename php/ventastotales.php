@@ -9,7 +9,7 @@ if (empty($_SESSION["usuario"])) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ver Usuarios</title>
+    <title>Ventas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" type="image/svg+xml" href="../favicon/moon-solid.svg" sizes="any">
     <meta http-equiv="x-ua-compatible" content="ie-edge">
@@ -98,35 +98,32 @@ if (empty($_SESSION["usuario"])) {
 		include '../scripts/database.php';
 		$conexion = new Database();
 		$conexion->conectarBD();
-		$consulta="SELECT*FROM usuarios";
+		$consulta="SELECT v.folio ,concat(u.nombre,' ',u.apellidos) AS vendedor, concat(c.nombre,' ',c.apellidos) AS cliente, v.forma_pago, v.f_reg  FROM usuarios AS u INNER JOIN ventas AS v ON v.vendedor = u.id INNER JOIN clientes AS c ON c.id = v.cliente ORDER BY v.folio DESC";
 		$tabla = $conexion->seleccionar($consulta);
 		 ?>
 	<div class="container" id="cat">
-		<h2>Usuarios</h2>
+		<div class="row" style="margin-bottom: 20px">
+			<div class="col-md-10 col-12"><h2>Ventas</h2></div>
+		</div>
 		<table class="table table-hover table-responsive-sm">
 			<thead class="bg-primary">
-				<th scope="col">ID</th>
-				<th scope="col">Nombre Completo</th>
-				<th scope="col">Correo</th>
-				<th scope="col">Telefono</th>
-				<th scope="col">Nacimiento</th>
-				<th scope="col">Domicilio</th>
-				<th scope="col">Tipo</th>
+				<th scope="col">Folio</th>
+				<th scope="col">Vendedor</th>
+				<th scope="col">Cliente</th>
+				<th scope="col">Pago</th>
+				<th scope="col">Fecha</th>
 				<th scope="col">Acciones</th>
 			</thead>
 			<tbody>
 				<?php foreach($tabla as $fila): ?>
 					<tr>
-						<th> <?php echo $fila->id; ?> </th>
-						<td> <?php echo $fila->nombre ." ". $fila->apellidos; ?> </td>
-						<th> <?php echo $fila->correo; ?> </th>
-						<td> <?php echo $fila->telefono; ?> </td>
-						<td> <?php echo $fila->fecha_nac; ?> </td>
-						<td> <?php echo $fila->domicilio; ?> </td>
-						<th> <?php echo $fila->tipo_usuario; ?> </th>
+						<th> <?php echo $fila->folio; ?> </td>
+						<td> <?php echo $fila->vendedor; ?> </td>
+						<td> <?php echo $fila->cliente; ?> </td>
+						<td> <?php echo $fila->forma_pago; ?> </td>
+						<td> <?php echo $fila->f_reg; ?> </td>
 						<td style="display: inline-flex;">
-							<a href="actualizarvendedor.php?id=<?php echo $fila->id; ?>" class="btn btn-info" role="button" aria-pressed="true" style="margin-right: 3px;" ><i class="fas fa-pen"></i></a>
-							<a href="password.php?id=<?php echo $fila->id; ?>" class="btn btn-warning" role="button" aria-pressed="true"><i class="fas fa-lock"></i></a>
+							<a href="sale.php?folio=<?php echo $fila->folio; ?>" class="btn btn-info" role="button" aria-pressed="true" style="margin-right: 3px;" ><i class="fas fa-eye"></i> Detalles </a>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -134,7 +131,6 @@ if (empty($_SESSION["usuario"])) {
 		</table>
 	</div>
 	<?php $conexion->desconectarBD(); ?>
-	
 
 <!-- ***************Termino contenido del sitio******************** -->
    <!-- Enlazes a Jquery -->

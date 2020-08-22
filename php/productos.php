@@ -11,7 +11,7 @@ if (empty($_SESSION["usuario"])) {
     <meta charset="UTF-8">
     <title>Productos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/svg+xml" href="favicon/moon-solid.svg" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="../favicon/moon-solid.svg" sizes="any">
     <meta http-equiv="x-ua-compatible" content="ie-edge">
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/maina.css">
@@ -41,7 +41,7 @@ if (empty($_SESSION["usuario"])) {
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 		          <a class="dropdown-item" href="#">Registros</a>
-		          <a class="dropdown-item" href="#">Nueva Venta</a>
+		          <a class="dropdown-item" href="ventaa.php">Nueva Venta</a>
 		          <a class="dropdown-item" href="#">Consultas</a>
 		        </div>
 		      </li>

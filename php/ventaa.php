@@ -9,7 +9,7 @@ if (empty($_SESSION["usuario"])) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ver Usuarios</title>
+    <title>Agergar Producto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" type="image/svg+xml" href="../favicon/moon-solid.svg" sizes="any">
     <meta http-equiv="x-ua-compatible" content="ie-edge">
@@ -17,7 +17,6 @@ if (empty($_SESSION["usuario"])) {
     <link rel="stylesheet" href="../css/maina.css">
     <link rel="stylesheet" href="../css/all.min.css">
     <link rel="stylesheet" href="../css/forms.css">
-    <link rel="stylesheet" href="../css/categorias.css">
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
 	<style>
 		form {margin-bottom: 50px}
@@ -94,48 +93,84 @@ if (empty($_SESSION["usuario"])) {
 	</nav>
 
 <!-- ***************Inicio del sitio******************* -->
-<?php 
-		include '../scripts/database.php';
-		$conexion = new Database();
-		$conexion->conectarBD();
-		$consulta="SELECT*FROM usuarios";
-		$tabla = $conexion->seleccionar($consulta);
-		 ?>
-	<div class="container" id="cat">
-		<h2>Usuarios</h2>
-		<table class="table table-hover table-responsive-sm">
-			<thead class="bg-primary">
-				<th scope="col">ID</th>
-				<th scope="col">Nombre Completo</th>
-				<th scope="col">Correo</th>
-				<th scope="col">Telefono</th>
-				<th scope="col">Nacimiento</th>
-				<th scope="col">Domicilio</th>
-				<th scope="col">Tipo</th>
-				<th scope="col">Acciones</th>
-			</thead>
-			<tbody>
-				<?php foreach($tabla as $fila): ?>
-					<tr>
-						<th> <?php echo $fila->id; ?> </th>
-						<td> <?php echo $fila->nombre ." ". $fila->apellidos; ?> </td>
-						<th> <?php echo $fila->correo; ?> </th>
-						<td> <?php echo $fila->telefono; ?> </td>
-						<td> <?php echo $fila->fecha_nac; ?> </td>
-						<td> <?php echo $fila->domicilio; ?> </td>
-						<th> <?php echo $fila->tipo_usuario; ?> </th>
-						<td style="display: inline-flex;">
-							<a href="actualizarvendedor.php?id=<?php echo $fila->id; ?>" class="btn btn-info" role="button" aria-pressed="true" style="margin-right: 3px;" ><i class="fas fa-pen"></i></a>
-							<a href="password.php?id=<?php echo $fila->id; ?>" class="btn btn-warning" role="button" aria-pressed="true"><i class="fas fa-lock"></i></a>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
+	<?php 
+	include '../scripts/database.php';
+	$vendedor = $_SESSION["vendedor"];
+	$user=new Database();
+	$user->conectarBD();
+	$cadena = "SELECT*FROM usuarios WHERE id = '$vendedor'";
+	$registro = $user->seleccionar2($cadena);
+	$nombre = $registro['nombre'] ." ". $registro['apellidos'];
+	$id = $registro['id'];
+	$user->desconectarBD();
+	 ?>
+	 <?php 
+	 $clientes=new Database();
+	 $clientes->conectarBD();
+	 $cadena = "SELECT * FROM clientes";
+	 $cliente = $clientes->seleccionar($cadena);
+	 $clientes->desconectarBD();
+	  ?>
+	 <?php 
+	 $productos=new Database();
+	 $productos->conectarBD();
+	 $cadena = "SELECT * FROM productos";
+	 $producto = $productos->seleccionar($cadena);
+	 $productos->desconectarBD();
+	  ?>
+	<div class="container">
+		<form action="../scripts/venta.php" method="post" class="form col-md-6 col-11">
+			<h2>Realizar Venta</h2>
+			<div class="input-group mb-3">
+			    <div class="input-group-prepend">
+			      <span class="input-group-text"># de Vendedor </span>
+			    </div>
+			    <input type="text" class="form-control" id="" name="id" aria-describedby="emailHelp" value="<?php echo $id; ?>" disabled>
+		  	</div>
+			<div class="input-group mb-3">
+			    <div class="input-group-prepend">
+			      <span class="input-group-text">Nombre </span>
+			    </div>
+			    <input type="text" class="form-control" id="" name="vendedor" aria-describedby="emailHelp" value="<?php echo $nombre; ?>" disabled>
+		  	</div>
+		  	<div class="input-group mb-3">
+			    <div class="input-group-prepend">
+			      <span class="input-group-text">Cliente </span>
+			    </div>
+		    	<select class="form-control" id="sel1" name="cliente">
+				     <?php foreach ($cliente as $value): ?>
+				     	<option value="<?php echo $value->id; ?>"> <?php echo $value->nombre ." ". $value->apellidos; ?> </option>
+				     <?php endforeach; ?>
+				</select>
+		  	</div>
+		  	<div class="input-group mb-3">
+			    <div class="input-group-prepend">
+			      <span class="input-group-text">Producto </span>
+			    </div>
+		    	<select class="form-control" id="sel1" name="producto">
+				     <?php foreach ($producto as $value): ?>
+				     	<option value="<?php echo $value->reg; ?>"> <?php echo $value->folio ."  -$". $value->precio_venta; ?> </option>
+				     <?php endforeach; ?>
+				</select>
+		  	</div>
+		  	<div class="input-group mb-3">
+			    <div class="input-group-prepend">
+			      <span class="input-group-text">Cantidad </span>
+			    </div>
+			    <input type="number" class="form-control" id="" name="cantidad" aria-describedby="emailHelp" value="1" min="1" required>
+		  	</div>
+		  	<div class="input-group mb-3">
+			    <div class="input-group-prepend">
+			      <span class="input-group-text">Forma de pago </span>
+			    </div>
+		    	<select class="form-control" id="sel1" name="pago">
+		    		<option value="EFECTIVO">Efectivo</option>
+		    		<option value="CREDITO">Credito</option>
+				</select>
+		  	</div>
+		  	<button type="submit" class="btn btn-lg btn-success" style="width: 100%">Registrar</button>
+		</form>
 	</div>
-	<?php $conexion->desconectarBD(); ?>
-	
-
 <!-- ***************Termino contenido del sitio******************** -->
    <!-- Enlazes a Jquery -->
     <script src="../js/popper.min.js"></script>

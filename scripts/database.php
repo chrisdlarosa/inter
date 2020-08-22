@@ -3,8 +3,8 @@ class Database
 {
 	private $PDOLocal;
 	private $user = "root";
-	private $password = "ch8811b";
-	private $server ="mysql:host=localhost; dbname=inter";
+	private $password = "";
+	private $server ="mysql:host=localhost; dbname=ubuntu";
 	function conectarBD()
 	{
 		try{
@@ -29,6 +29,17 @@ class Database
 			$resultado = $this->PDOLocal->query($cadenaSQL);
 			$renglon = $resultado->fetchAll(PDO::FETCH_OBJ);
 			return $renglon;
+		}
+		catch(PDOException $e){
+			echo $e->getMessage();
+		}
+	}
+	function seleccionar2($cadenaSQL2)
+	{
+		try{
+			$resultado2 = $this->PDOLocal->query($cadenaSQL2);
+			$renglon2 = $resultado2->fetch(PDO::FETCH_ASSOC);
+			return $renglon2;
 		}
 		catch(PDOException $e){
 			echo $e->getMessage();
