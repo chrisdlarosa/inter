@@ -1,2 +1,0 @@
-# inter
-Integradora I
